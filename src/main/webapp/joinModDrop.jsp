@@ -13,7 +13,7 @@
 <body>
 	<%@ include file="header.jsp"%>
 	
-	회원 가입/수정/탈퇴 작업공간
+	회원 가입/수정/탈퇴 작업공간 (TEST)
 	
 	<%@ include file="footer.jsp"%>
 </body>
