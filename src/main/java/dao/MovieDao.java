@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dto.MovieInfo;
+
 public class MovieDao {
 	Connection conn = null;
 	PreparedStatement psmt = null;
@@ -42,28 +44,36 @@ public class MovieDao {
 			e.printStackTrace();
 		}
 	}
-//	public void insertMovieInfo(TmdbData tmdb) {
-//		
-//		String sqlQuery = "INSERT INTO movie_info VALUES( ?, ?)";
-//		try {
-//			connect();
-//			psmt = conn.prepareStatement(sqlQuery);
-//		
-//			psmt.setString(1, tmdb.title);  
-//			psmt.setString(2, tmdb.poster_path);
-//
-//			int resultCnt = psmt.executeUpdate();
-//			if(resultCnt > 0) {
-//				System.out.println("Insert 성공");
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			disConnect();
-//		}
-//	}
+	public void insertMovieInfo(MovieInfo mi) {
+		
+		String sqlQuery = "INSERT INTO movie_info VALUES( ?, ?,?,?,?,?,?,?,?,12000)";
+		try {
+			connect();
+			psmt = conn.prepareStatement(sqlQuery);
+		
+			psmt.setInt(1, mi.getM_code());  
+			psmt.setString(2, mi.getM_title());
+			psmt.setDate(3, mi.getOpen_dt());
+			psmt.setDate(4, mi.getClose_dt());
+			psmt.setInt(5, mi.getGenre_code());
+			psmt.setString(6, mi.getPoster_path());
+			psmt.setInt(7, mi.getRank());
+			psmt.setInt(8, mi.getAudi_acc());
+			psmt.setInt(9, mi.getAudits());
+//			psmt.setInt(10, mi.getPrice());  
+
+			int resultCnt = psmt.executeUpdate();
+			if(resultCnt > 0) {
+				System.out.println("Insert 성공");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+	}
 //	public List<TmdbData> selectTmdbStatus() {
 //		String sqlQuery = "select * from movie_info";
 //		List<TmdbData> tmdbList = null;

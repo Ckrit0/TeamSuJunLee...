@@ -16,7 +16,7 @@ import org.json.simple.parser.ParseException;
 
 public class ApiMain {
 	
-	public static JSONObject getTmdbJson(Object object) {
+	public JSONObject getTmdbJson(Object object) {
 		String jsonStr = "";
 
 		StringBuilder urlBuilder = new StringBuilder("https://api.themoviedb.org/3/search/movie"); /*URL*/
