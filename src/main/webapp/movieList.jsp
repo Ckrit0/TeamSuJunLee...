@@ -23,7 +23,7 @@
 	ApiMain api = new ApiMain();
 	JSONParser jsonParser = new JSONParser();
 	try {
-		JSONObject boxObj = (JSONObject) jsonParser.parse(api.boxOffice );
+		JSONObject boxObj = (JSONObject) jsonParser.parse(api.getDailyBoxOffice() );
 		JSONObject boxResultObj = (JSONObject) boxObj.get("boxOfficeResult");
 
 		JSONArray dailyBoxArr = (JSONArray) boxResultObj.get("dailyBoxOfficeList");
@@ -51,9 +51,7 @@
 	}
 	} catch (ParseException e) {
 	e.printStackTrace();
-	} finally {
-	System.out.println("이상하다");
-	}
+	} 
 	%>
 <!-- 	<script> -->
 <!--  		document.querySelectorAll("#movieDetail").addEventListener("click",(e)=>{ -->
