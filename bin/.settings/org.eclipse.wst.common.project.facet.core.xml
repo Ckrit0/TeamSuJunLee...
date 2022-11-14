@@ -2,6 +2,7 @@
 <faceted-project>
   <runtime name="Apache Tomcat v9.0"/>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <fixed facet="wst.jsdt.web"/>
   <fixed facet="java"/>
 =======
@@ -9,6 +10,16 @@
   <fixed facet="wst.jsdt.web"/>
 >>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
   <fixed facet="jst.web"/>
+=======
+  <fixed facet="jst.web"/>
+  <fixed facet="wst.jsdt.web"/>
+  <fixed facet="java"/>
+=======
+  <fixed facet="java"/>
+  <fixed facet="wst.jsdt.web"/>
+  <fixed facet="jst.web"/>
+>>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
+>>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
   <installed facet="java" version="18"/>
   <installed facet="jst.web" version="4.0"/>
   <installed facet="wst.jsdt.web" version="1.0"/>
