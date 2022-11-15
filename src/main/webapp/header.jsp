@@ -1,10 +1,13 @@
 <%-- 페이지 네비게이션과 로그인/로그아웃을 담당하는 jsp파일
 	세션변수 CK_email : 로그인 상태를 확인하기 위해 사용 (DB만들면 PK값으로 변수명 변경예정)
 	담당자: 홍준표 --%>
+<%@page import="dto.CK_User"%>
+<%@page import="dao.CK_UserDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
+CK_UserDAO CK_userDao = new CK_UserDAO();
 %>
 <!DOCTYPE html>
 <html>
@@ -24,7 +27,7 @@ request.setCharacterEncoding("UTF-8");
 						aria-current="page" href="index.jsp" style="font-size: 18px;">예매하기</a></li>
 
 				</ul>
-				<% if(session.getAttribute("CK_email") == null){%>
+				<% if(session.getAttribute("CK_user_num") == null){%>
 					<form action="login.jsp" method="post" class="d-flex">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item"><div class="form-floating mb-3">
@@ -48,11 +51,12 @@ request.setCharacterEncoding("UTF-8");
 						style="padding: 16px; margin-top: -16px" type="button">회원가입</button>
 				</a>
 				<%} else{
-					String CK_email = (String)session.getAttribute("CK_email");
+					int CK_user_num = Integer.parseInt((String)session.getAttribute("CK_user_num"));
+					CK_User CK_user = CK_userDao.setUserByUser_number(CK_user_num);
 					%>
 					
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item"><%=CK_email%>님 반갑습니다.</li>
+						<li class="nav-item"><%=CK_user.getUser_id()%>님 반갑습니다.</li>
 					</ul>
 				<a href="member.jsp">
 					<button class="btn btn-outline-success nav-item"
