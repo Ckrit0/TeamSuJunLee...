@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,29 +162,47 @@ public void mergeMovieInfo(MovieInfo mi) {
 		}
 		return movieInfo.getPoster_path();
 	}
-//	public List<TmdbData> selectTmdbStatus() {
-//		String sqlQuery = "select * from movie_info";
-//		List<TmdbData> tmdbList = null;
-//		try {
-//			connect();
-//			psmt = conn.prepareStatement(sqlQuery);
-//			rs = psmt.executeQuery();
-//			
-//			tmdbList = new ArrayList<TmdbData>();
-//			while (rs.next()) {
-//				TmdbData tmdb = new TmdbData();
-//				tmdb.title = rs.getString("title");
-//				tmdb.poster_path = rs.getString("poster_path");
-//				
-//				tmdbList.add(tmdb);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			disConnect();
-//		}
-//		return tmdbList;
-//	}
+	
+	public List<MovieInfo> selectMovieInfo() {
+		String sqlQuery = "select m_title"
+				+ " ,to_char(open_dt,'YYYYMMDD') open_dt, to_char(close_dt+30,'YYYYMMDD') close_dt, rank , audi_acc , audits, price "
+				+ " from movie_info where showRange =?";
+		List<MovieInfo> movieInfoList = null;
+		MovieInfo movieInfo = new MovieInfo();
+		try {
+			connect();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, "20221114~20221114");
+			rs = psmt.executeQuery();
+			
+			movieInfoList = new ArrayList<MovieInfo>();
+			while (rs.next()) {
+				movieInfo.setM_title( rs.getString("m_title")) ;
+				String yyyymmdd = rs.getString("open_dt");
+				int year = Integer.parseInt(yyyymmdd.substring(0, 3));
+				int month = Integer.parseInt(yyyymmdd.substring(4, 5));
+				int day = Integer.parseInt(yyyymmdd.substring(6));
+				movieInfo.setOpen_dt(LocalDateTime.of(year, month,day, 0, 0));
+				
+				String yyyymmdd2 = rs.getString("close_dt");
+				int year2 = Integer.parseInt(yyyymmdd2.substring(0, 3));
+				int month2 = Integer.parseInt(yyyymmdd2.substring(4, 5));
+				int day2 = Integer.parseInt(yyyymmdd2.substring(6));
+				movieInfo.setOpen_dt(LocalDateTime.of(year2, month2,day2, 0, 0));
+				movieInfo.setRank(rs.getInt("rank"));
+				movieInfo.setAudi_acc(rs.getInt("audi_acc"));
+				movieInfo.setAudits(rs.getString("audits"));
+				movieInfo.setPrice(rs.getInt("price"));
+				
+				movieInfoList.add(movieInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfoList;
+	}
 }

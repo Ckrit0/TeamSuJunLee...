@@ -1,5 +1,6 @@
 package dto;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class MovieInfo {
@@ -32,6 +33,7 @@ public class MovieInfo {
 	public void setM_title(String m_title) {
 		this.m_title = m_title;
 	}
+	
 	
 	public LocalDateTime getOpen_dt() {
 		return open_dt;
@@ -82,6 +84,13 @@ public class MovieInfo {
 		this.price = price;
 	}
 	private int price;
+
+	@Override
+	public String toString() {
+		return "MovieInfo [showRange=" + showRange + ", m_code=" + m_code + ", m_title=" + m_title + ", open_dt="
+				+ open_dt + ", close_dt=" + close_dt + ", genre_code=" + genre_code + ", poster_path=" + poster_path
+				+ ", rank=" + rank + ", audi_acc=" + audi_acc + ", audits=" + audits + ", price=" + price + "]";
+	}
 
 	
 
