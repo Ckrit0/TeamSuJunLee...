@@ -1,12 +1,12 @@
 package dto;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class MovieInfo {
 	private int m_code;
 	private String m_title;
-	private Date open_dt;
-	private Date close_dt;
+	private LocalDateTime open_dt;
+	private LocalDateTime close_dt;
 	private int genre_code;
 	private String poster_path;
 	private int rank;
@@ -25,16 +25,17 @@ public class MovieInfo {
 	public void setM_title(String m_title) {
 		this.m_title = m_title;
 	}
-	public Date getOpen_dt() {
+	
+	public LocalDateTime getOpen_dt() {
 		return open_dt;
 	}
-	public void setOpen_dt(Date open_dt) {
+	public void setOpen_dt(LocalDateTime open_dt) {
 		this.open_dt = open_dt;
 	}
-	public Date getClose_dt() {
+	public LocalDateTime getClose_dt() {
 		return close_dt;
 	}
-	public void setClose_dt(Date close_dt) {
+	public void setClose_dt(LocalDateTime close_dt) {
 		this.close_dt = close_dt;
 	}
 	public int getGenre_code() {

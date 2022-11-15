@@ -105,6 +105,43 @@ public class ApiMain {
 		return boxOffice;
 	}
 
+	public  JSONObject getWatchGrade(Object object) throws IOException {
+		String jsonObj = "";
+		StringBuilder urlBuilder = new StringBuilder("http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json"); /*URL*/
+	    urlBuilder.append("?" + URLEncoder.encode("key","UTF-8") + "=2d2918856517b45a2d1b486cbe274b43"); /*Service Key*/
+	    urlBuilder.append("&" + URLEncoder.encode("movieCd","UTF-8") + "=" + URLEncoder.encode((String) object, "UTF-8")); //영화코드
+//	    urlBuilder.append("&" + URLEncoder.encode("movieCd","UTF-8") + "=" + code); //영화코드
+	    URL url = new URL(urlBuilder.toString());
+	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	    conn.setRequestMethod("GET");
+	    conn.setRequestProperty("Content-type", "application/json");
+	    System.out.println("Response code: " + conn.getResponseCode());
+	    BufferedReader rd;
+	    if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+	        rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+	    } else {
+	        rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(),"UTF-8"));
+	    }
+	    StringBuilder sb = new StringBuilder();
+	    String line;
+	    while ((line = rd.readLine()) != null) {
+	        sb.append(line);
+	    }
+	    rd.close();
+	    conn.disconnect();
+	    jsonObj = sb.toString();
+	    
+	    JSONParser jsonParser = new JSONParser();
+		JSONObject tmdbObj=null;
+		try {
+			tmdbObj = (JSONObject)jsonParser.parse(jsonObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}finally {
+			System.out.println("getTmdbJson");
+		}
+		return tmdbObj;
+	}
 
 }
 

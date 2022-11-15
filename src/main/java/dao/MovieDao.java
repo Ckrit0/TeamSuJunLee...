@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +54,8 @@ public class MovieDao {
 		
 			psmt.setInt(1, mi.getM_code());  
 			psmt.setString(2, mi.getM_title());
-			psmt.setDate(3, mi.getOpen_dt());
-			psmt.setDate(4, mi.getClose_dt());
+			psmt.setTimestamp(3, Timestamp.valueOf(mi.getOpen_dt()));
+			psmt.setTimestamp(4, Timestamp.valueOf(mi.getClose_dt()));
 			psmt.setInt(5, mi.getGenre_code());
 			psmt.setString(6, mi.getPoster_path());
 			psmt.setInt(7, mi.getRank());

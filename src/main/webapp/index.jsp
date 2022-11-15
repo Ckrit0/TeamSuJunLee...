@@ -2,6 +2,8 @@
 	담당자: 공통 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="javax.servlet.*"%>
+<%@ page import="javax.servlet.http.*"%>
 <%
 request.setCharacterEncoding("UTF-8");
 %>
