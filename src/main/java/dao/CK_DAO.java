@@ -155,13 +155,13 @@ public class CK_DAO {
 	 * parameter = m_code, blarRange(가칭)
 	 * return CK_Movie 객체
 	 */
-	public CK_Movie setMovieByM_code(int m_code, Date blarRange) { // 조회기준일 변수변경
+	public CK_Movie setMovieByM_code(int m_code, String showRange) {
 		CK_Movie movie = null;
 		SQL = "SELECT * FROM MOVIE_INFO WHERE m_code = ? AND blarRange = ?";
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, m_code);
-			pstmt.setDate(2, blarRange); // 조회기준일 변수변경
+			pstmt.setString(2, showRange); // 조회기준일 변수변경
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				movie = new CK_Movie(); // 조회기준일 추가
