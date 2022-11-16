@@ -2,12 +2,12 @@
 	세션변수 CK_email : 로그인 상태를 확인하기 위해 사용 (DB만들면 PK값으로 변수명 변경예정)
 	담당자: 홍준표 --%>
 <%@page import="dto.CK_User"%>
-<%@page import="dao.CK_UserDAO"%>
+<%@page import="dao.CK_DAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
-CK_UserDAO CK_userDao = new CK_UserDAO();
+CK_DAO CK_Dao = new CK_DAO();
 %>
 <!DOCTYPE html>
 <html>
@@ -52,7 +52,7 @@ CK_UserDAO CK_userDao = new CK_UserDAO();
 				</a>
 				<%} else{
 					int CK_user_num = Integer.parseInt((String)session.getAttribute("CK_user_num"));
-					CK_User CK_user = CK_userDao.setUserByUser_number(CK_user_num);
+					CK_User CK_user = CK_Dao.setUserByUser_number(CK_user_num);
 					%>
 					
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
