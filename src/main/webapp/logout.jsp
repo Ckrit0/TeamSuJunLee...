@@ -5,6 +5,6 @@
 	pageEncoding="UTF-8"%>
 <%
 request.setCharacterEncoding("UTF-8");
-session.removeAttribute("CK_email");
+session.removeAttribute("CK_user_num");
 response.sendRedirect("index.jsp");
 %>
