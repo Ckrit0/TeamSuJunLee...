@@ -10,14 +10,22 @@
 <html>
 <body>
 	영화 상세페이지 작업공간
-	<%MovieDao dao = new MovieDao();
-// 	MovieInfo mi2 = new MovieInfo();
-// 	out.println(mi2.getRank());
-	List<MovieInfo> movieInfo = dao.selectMovieInfo();
-	for(MovieInfo mi : movieInfo) {%>
-		<h1><%=mi.getM_title() %></h1>
-	<%}
-	%>
+	
+ 	<%
+ 	String movieCd = request.getParameter("movieCd");
+ 	MovieDao MH_dao = new MovieDao();
+ 	List<MovieInfo> MH_movieInfo = MH_dao.selectMovieInfo(); 
+ 	for(MovieInfo MH_mi : MH_movieInfo) {%> 
+ 		<h3><%=MH_mi.getM_title()%></h3> 
+ 		<div><%=MH_mi.getOpen_dt() %></div> 
+ 		<div><%=MH_mi.getClose_dt() %></div> 
+ 		<div><%=MH_mi.getRank() %></div> 
+		<div><%=MH_mi.getAudi_acc()%></div> 
+		<div><%=MH_mi.getAudits() %></div> 
+		<div><%=MH_mi.getPrice() %></div> <br>
+ 	<%} 
+  	%>
+
 	
 </body>
 </html>

@@ -49,35 +49,35 @@ public class MovieDao {
 	
 public void mergeMovieInfo(MovieInfo mi) {
 		
-	String sqlQuery = "MERGE INTO movie_info m\r\n"
-			+ "USING dual\r\n"
-			+ "ON (m.showRange = to_char(sysdate,'YYYYMMDD~YYYYMMDD'))\r\n"
-			+ "WHEN MATCHED THEN\r\n"
-			+ "    UPDATE SET \r\n"
-			+ "            m.m_code=m.m_code,\r\n"
-			+ "            m.m_title=m.m_title,\r\n"
-			+ "            m.open_dt =m.open_dt,\r\n"
-			+ "            m.close_dt=m.close_dt,\r\n"
-			+ "            m.genre_code=m.genre_code,\r\n"
-			+ "            m.poster_path=m.poster_path,\r\n"
-			+ "            m.rank=m.rank,\r\n"
-			+ "            m.audi_acc=m.audi_acc,\r\n"
-			+ "            m.audits=m.audits,\r\n"
-			+ "            m.price=m.price\r\n"
-			+ "WHEN NOT MATCHED THEN\r\n"
-			+ "    INSERT (\r\n"
-			+ "            m.showRange,\r\n"
-			+ "            m.m_code,\r\n"
-			+ "            m.m_title,\r\n"
-			+ "            m.open_dt,\r\n"
-			+ "            m.close_dt,\r\n"
-			+ "            m.genre_code,\r\n"
-			+ "            m.poster_path,\r\n"
-			+ "            m.rank,\r\n"
-			+ "            m.audi_acc,\r\n"
-			+ "            m.audits,\r\n"
-			+ "            m.price\r\n"
-			+ "           )\r\n"
+	String sqlQuery = "MERGE INTO movie_info m"
+			+ " USING dual"
+			+ " ON (m.showRange = to_char(sysdate,'YYYYMMDD~YYYYMMDD'))"
+			+ " WHEN MATCHED THEN"
+			+ "    UPDATE SET "
+			+ "            m.m_code=m.m_code,"
+			+ "            m.m_title=m.m_title,"
+			+ "            m.open_dt =m.open_dt,"
+			+ "            m.close_dt=m.close_dt,"
+			+ "            m.genre_code=m.genre_code,"
+			+ "            m.poster_path=m.poster_path,"
+			+ "            m.rank=m.rank,"
+			+ "            m.audi_acc=m.audi_acc,"
+			+ "            m.audits=m.audits,"
+			+ "            m.price=m.price"
+			+ " WHEN NOT MATCHED THEN"
+			+ "    INSERT ("
+			+ "            showRange,"
+			+ "            m_code,"
+			+ "            m_title,"
+			+ "            open_dt,"
+			+ "            close_dt,"
+			+ "            genre_code,"
+			+ "            poster_path,"
+			+ "            rank,"
+			+ "            audi_acc,"
+			+ "            audits,"
+			+ "            price"
+			+ "           )"
 			+ "    VALUES(?,?,?,?,?,?,?,?,?,?,12000)";
 		try {
 			connect();
@@ -107,37 +107,37 @@ public void mergeMovieInfo(MovieInfo mi) {
 	}
 
 
-	public void insertMovieInfo(MovieInfo mi) {
-		
-		String sqlQuery = "INSERT INTO movie_info VALUES( ?,?, ?,?,?,?,?,?,?,?,12000)";
-		try {
-			connect();
-			psmt = conn.prepareStatement(sqlQuery);
-			
-			psmt.setString(1, mi.getShowRange());
-			psmt.setInt(2, mi.getM_code());  
-			psmt.setString(3, mi.getM_title());
-			psmt.setTimestamp(4, Timestamp.valueOf(mi.getOpen_dt()));
-			psmt.setTimestamp(5, Timestamp.valueOf(mi.getClose_dt()));
-			psmt.setInt(6, mi.getGenre_code());
-			psmt.setString(7, mi.getPoster_path());
-			psmt.setInt(8, mi.getRank());
-			psmt.setInt(9, mi.getAudi_acc());
-			psmt.setString(10, mi.getAudits());
-//			psmt.setInt(10, mi.getPrice());  
-
-			int resultCnt = psmt.executeUpdate();
-			if(resultCnt > 0) {
-				System.out.println("Insert 성공");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disConnect();
-		}
-	}
+//	public void insertMovieInfo(MovieInfo mi) {
+//		
+//		String sqlQuery = "INSERT INTO movie_info VALUES( ?,?, ?,?,?,?,?,?,?,?,12000)";
+//		try {
+//			connect();
+//			psmt = conn.prepareStatement(sqlQuery);
+//			
+//			psmt.setString(1, mi.getShowRange());
+//			psmt.setInt(2, mi.getM_code());  
+//			psmt.setString(3, mi.getM_title());
+//			psmt.setTimestamp(4, Timestamp.valueOf(mi.getOpen_dt()));
+//			psmt.setTimestamp(5, Timestamp.valueOf(mi.getClose_dt()));
+//			psmt.setInt(6, mi.getGenre_code());
+//			psmt.setString(7, mi.getPoster_path());
+//			psmt.setInt(8, mi.getRank());
+//			psmt.setInt(9, mi.getAudi_acc());
+//			psmt.setString(10, mi.getAudits());
+////			psmt.setInt(10, mi.getPrice());  
+//
+//			int resultCnt = psmt.executeUpdate();
+//			if(resultCnt > 0) {
+//				System.out.println("Insert 성공");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			disConnect();
+//		}
+//	}
 	
 	public String selectMovieImageBYCode(int code){
 		String sql = "SELECT poster_path FROM movie_info WHERE m_code = ?";
@@ -165,30 +165,33 @@ public void mergeMovieInfo(MovieInfo mi) {
 	
 	public List<MovieInfo> selectMovieInfo() {
 		String sqlQuery = "select m_title"
-				+ " ,to_char(open_dt,'YYYYMMDD') open_dt, to_char(close_dt+30,'YYYYMMDD') close_dt, rank , audi_acc , audits, price "
-				+ " from movie_info where showRange =?";
+				+ " ,to_char(open_dt,'YYYYMMDD') open_dt, to_char(close_dt+30,'YYYYMMDD') close_dt, rank , audi_acc , audits, price,rownum "
+				+ " from movie_info where m_code =? and rownum=1 order by showrange desc";
 		List<MovieInfo> movieInfoList = null;
-		MovieInfo movieInfo = new MovieInfo();
 		try {
 			connect();
+			MovieInfo movieInfo =null;
+			
 			psmt = conn.prepareStatement(sqlQuery);
-			psmt.setString(1, "20221114~20221114");
+			psmt.setInt(1, 20226254);
 			rs = psmt.executeQuery();
 			
 			movieInfoList = new ArrayList<MovieInfo>();
 			while (rs.next()) {
+				movieInfo = new MovieInfo();
 				movieInfo.setM_title( rs.getString("m_title")) ;
 				String yyyymmdd = rs.getString("open_dt");
-				int year = Integer.parseInt(yyyymmdd.substring(0, 3));
-				int month = Integer.parseInt(yyyymmdd.substring(4, 5));
+				
+				int year = Integer.parseInt(yyyymmdd.substring(0, 4));
+				int month = Integer.parseInt(yyyymmdd.substring(4, 6));
 				int day = Integer.parseInt(yyyymmdd.substring(6));
 				movieInfo.setOpen_dt(LocalDateTime.of(year, month,day, 0, 0));
 				
 				String yyyymmdd2 = rs.getString("close_dt");
-				int year2 = Integer.parseInt(yyyymmdd2.substring(0, 3));
-				int month2 = Integer.parseInt(yyyymmdd2.substring(4, 5));
+				int year2 = Integer.parseInt(yyyymmdd2.substring(0, 4));
+				int month2 = Integer.parseInt(yyyymmdd2.substring(4, 6));
 				int day2 = Integer.parseInt(yyyymmdd2.substring(6));
-				movieInfo.setOpen_dt(LocalDateTime.of(year2, month2,day2, 0, 0));
+				movieInfo.setClose_dt(LocalDateTime.of(year2, month2,day2, 0, 0));
 				movieInfo.setRank(rs.getInt("rank"));
 				movieInfo.setAudi_acc(rs.getInt("audi_acc"));
 				movieInfo.setAudits(rs.getString("audits"));

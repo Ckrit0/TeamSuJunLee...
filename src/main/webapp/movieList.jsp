@@ -13,6 +13,7 @@ request.setCharacterEncoding("UTF-8");
 <%@ page import="java.net.HttpURLConnection"%>
 <%@ page import="java.net.URL"%>
 <%@ page import="java.net.URLEncoder"%>
+<%@ page import="java.util.*"%>
 <%@ page import="org.json.simple.JSONArray"%>
 <%@ page import="org.json.simple.JSONObject"%>
 <%@ page import="org.json.simple.parser.JSONParser"%>
@@ -76,20 +77,26 @@ request.setCharacterEncoding("UTF-8");
 			dao.mergeMovieInfo(mi);
 	}
 	%>
+	<form name="movieDetailForm"  method="post" action="MH_selectMovieAction.jsp">
 	<img
-		<%-- 				src="https://image.tmdb.org/t/p/original<%=resultObj.get("poster_path")%>" --%>
+		<%-- src="https://image.tmdb.org/t/p/original<%=resultObj.get("poster_path")%>" --%>
 		src="https://image.tmdb.org/t/p/original<%=dao.selectMovieImageBYCode(Integer.parseInt(String.valueOf(dailyBoxObj.get("movieCd"))))%>"
 		width=200 height=200 id=<%=dailyBoxObj.get("movieCd")%>
-		style="cursor: pointer" onclick="alert('예매하시겠음?')" alt="이미지 준비중">
+		style="cursor: pointer" alt="이미지 준비중" name="movieCd" value=<%=dailyBoxObj.get("movieCd")%>>
 	
 	<h4><%=dailyBoxObj.get("movieNm")%>
-	</h4>
+	</h4><br>
+	</form>
 	<% 
 		}
 	} catch (Exception e) {
 	e.printStackTrace();
 	}
 	%>
-
+	
+	
+	<script>
+		
+	</script>
 </body>
 </html>
