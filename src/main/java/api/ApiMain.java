@@ -73,7 +73,7 @@ public class ApiMain {
 		Calendar date = Calendar.getInstance();
 		int year = date.get(Calendar.YEAR);
 		int month = date.get(Calendar.MONTH)+1;
-		int day = date.get(Calendar.DAY_OF_MONTH)-2;
+		int day = date.get(Calendar.DAY_OF_MONTH)-1;
 
 		StringBuilder urlBuilder = new StringBuilder("http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json"); /*URL*/
 		try {

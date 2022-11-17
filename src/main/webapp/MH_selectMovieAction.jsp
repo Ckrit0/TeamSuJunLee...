@@ -1,17 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ page import="dto.MovieInfo"%>
+<%@ page import="java.util.*"%>
 <%
-	String movieCd = request.getParameter("movieCd");
-	out.println(movieCd);
-	
+	response.setCharacterEncoding("UTF-8");
+	String movieCd = request.getParameter("movieCd") ;
+	session.setAttribute("MH_movieCd", movieCd);
+	out.println(session.getAttribute("MH_movieCd"));
+	response.sendRedirect("index.jsp");
 			 %>
-			 <script>location.href = "index.jsp"</script>
-</body>
-</html>
+			 

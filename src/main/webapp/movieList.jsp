@@ -24,6 +24,11 @@ request.setCharacterEncoding("UTF-8");
 <!DOCTYPE html>
 <html>
 <body>
+	<script>
+		function imgClick(String codeda) {
+			document.getElementById('movieDetailForm').submit();
+		}
+	</script>
 	<h2>영화순위</h2>
 	<br>
 	<%
@@ -61,9 +66,7 @@ request.setCharacterEncoding("UTF-8");
 			mi.setAudits(String.valueOf(auditsObj.get("watchGradeNm")));
 			JSONObject tmdbSearchMovie = api.getTmdbJson(dailyBoxObj.get("movieNm")); //tmdb영화검색
 			JSONArray resultsArr = (JSONArray) tmdbSearchMovie.get("results");
-	%>
-
-	<%
+	
 	for (int j = 0; j < resultsArr.size(); j++) {
 		JSONObject resultObj = (JSONObject) resultsArr.get(j);
 		JSONArray genreArr = (JSONArray) resultObj.get("genre_ids");
@@ -71,32 +74,30 @@ request.setCharacterEncoding("UTF-8");
 			for (int k = 0; k < genreArr.size(); k++) {
 		//tmdb 장르코드,포스터패스 가져오기
 		mi.setGenre_code(Integer.parseInt(String.valueOf(genreArr.get(k))));
-			} 
- 	}
-			mi.setPoster_path(String.valueOf(resultObj.get("poster_path")));
-			dao.mergeMovieInfo(mi);
+			}
+		}
+		mi.setPoster_path(String.valueOf(resultObj.get("poster_path")));
+		dao.mergeMovieInfo(mi);
 	}
 	%>
-	<form name="movieDetailForm"  method="post" action="MH_selectMovieAction.jsp">
-	<img
-		<%-- src="https://image.tmdb.org/t/p/original<%=resultObj.get("poster_path")%>" --%>
-		src="https://image.tmdb.org/t/p/original<%=dao.selectMovieImageBYCode(Integer.parseInt(String.valueOf(dailyBoxObj.get("movieCd"))))%>"
-		width=200 height=200 id=<%=dailyBoxObj.get("movieCd")%>
-		style="cursor: pointer" alt="이미지 준비중" name="movieCd" value=<%=dailyBoxObj.get("movieCd")%>>
-	
-	<h4><%=dailyBoxObj.get("movieNm")%>
-	</h4><br>
+	<form id="movieDetailForm" name="movieDetailForm" method="post"
+		action="MH_selectMovieAction.jsp">
+		<input type="image" id="<%=dailyBoxObj.get("movieCd") %>=" 
+			name="movieCd" src="https://image.tmdb.org/t/p/original<%=dao.selectMovieImageBYCode(Integer.parseInt(String.valueOf(dailyBoxObj.get("movieCd"))))%>"
+			width=150 height=200 style="cursor: pointer" alt="이미지 준비중" value=<%=dailyBoxObj.get("movieCd")%>>
+		<input type ="hidden" name="movieCd" value="<%=dailyBoxObj.get("movieCd")%>">
+		<h4 ><%=dailyBoxObj.get("movieNm")%>
+		</h4>
+		<br>
 	</form>
-	<% 
-		}
+	<%
+	}
 	} catch (Exception e) {
 	e.printStackTrace();
 	}
 	%>
-	
-	
-	<script>
-		
-	</script>
+
+
+
 </body>
 </html>

@@ -66,17 +66,17 @@ public void mergeMovieInfo(MovieInfo mi) {
 			+ "            m.price=m.price"
 			+ " WHEN NOT MATCHED THEN"
 			+ "    INSERT ("
-			+ "            showRange,"
-			+ "            m_code,"
-			+ "            m_title,"
-			+ "            open_dt,"
-			+ "            close_dt,"
-			+ "            genre_code,"
-			+ "            poster_path,"
-			+ "            rank,"
-			+ "            audi_acc,"
-			+ "            audits,"
-			+ "            price"
+			+ "            m.showRange,"
+			+ "            m.m_code,"
+			+ "            m.m_title,"
+			+ "            m.open_dt,"
+			+ "            m.close_dt,"
+			+ "            m.genre_code,"
+			+ "            m.poster_path,"
+			+ "            m.rank,"
+			+ "            m.audi_acc,"
+			+ "            m.audits,"
+			+ "            m.price"
 			+ "           )"
 			+ "    VALUES(?,?,?,?,?,?,?,?,?,?,12000)";
 		try {
@@ -163,7 +163,7 @@ public void mergeMovieInfo(MovieInfo mi) {
 		return movieInfo.getPoster_path();
 	}
 	
-	public List<MovieInfo> selectMovieInfo() {
+	public List<MovieInfo> selectMovieInfo(int code) {
 		String sqlQuery = "select m_title"
 				+ " ,to_char(open_dt,'YYYYMMDD') open_dt, to_char(close_dt+30,'YYYYMMDD') close_dt, rank , audi_acc , audits, price,rownum "
 				+ " from movie_info where m_code =? and rownum=1 order by showrange desc";
@@ -173,7 +173,7 @@ public void mergeMovieInfo(MovieInfo mi) {
 			MovieInfo movieInfo =null;
 			
 			psmt = conn.prepareStatement(sqlQuery);
-			psmt.setInt(1, 20226254);
+			psmt.setInt(1, code);
 			rs = psmt.executeQuery();
 			
 			movieInfoList = new ArrayList<MovieInfo>();
