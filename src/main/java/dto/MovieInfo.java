@@ -14,7 +14,14 @@ public class MovieInfo {
 	private int rank;
 	private int audi_acc;
 	private String audits;
+	private String genreName;
 	
+	public String getGenreName() {
+		return genreName;
+	}
+	public void setGenreName(String genreName) {
+		this.genreName = genreName;
+	}
 	public String getShowRange() {
 		return showRange;
 	}

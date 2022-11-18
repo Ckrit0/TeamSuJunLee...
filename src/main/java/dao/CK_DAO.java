@@ -1,6 +1,6 @@
 /**
- * 너무 잦은 connect와 close는 접속오류를 발생 할 수 있습니다.
- * 그것도 모르고 코드만 계속 수정함..
+ * �꼫臾� �옦�� connect�� close�뒗 �젒�냽�삤瑜섎�� 諛쒖깮 �븷 �닔 �엳�뒿�땲�떎.
+ * 洹멸쾬�룄 紐⑤Ⅴ怨� 肄붾뱶留� 怨꾩냽 �닔�젙�븿..
  */
 package dao;
 
@@ -17,16 +17,16 @@ import dto.CK_Movie;
 import dto.CK_User;
 
 public class CK_DAO {
-	//전역변수 모음
+	//�쟾�뿭蹂��닔 紐⑥쓬
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	private String dbURL = "jdbc:oracle:thin:@localhost:1521:orcl";
+	private String dbURL = "jdbc:oracle:thin:@localhost:1521:xe";
 	private String dbID = "scott";
 	private String dbPW = "tiger";
 	private String SQL = "";
 
-	public CK_DAO() { // 생성자, 연결정보 생성
+	public CK_DAO() { // �깮�꽦�옄, �뿰寃곗젙蹂� �깮�꽦
 		// TODO Auto-generated constructor stub
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -37,9 +37,9 @@ public class CK_DAO {
 	}
 
 	/*
-	 * id에 따른 비밀번호 비교
+	 * id�뿉 �뵲瑜� 鍮꾨�踰덊샇 鍮꾧탳
 	 * parameter = id, password.
-	 * return 1:비밀번호 일치, 0:비밀번호 불일치, -1:아이디없음, -2:서버오류
+	 * return 1:鍮꾨�踰덊샇 �씪移�, 0:鍮꾨�踰덊샇 遺덉씪移�, -1:�븘�씠�뵒�뾾�쓬, -2:�꽌踰꾩삤瑜�
 	 */
 	public int login(String user_id, String user_password) {
 		SQL = "SELECT user_password FROM USER_MEMBER WHERE user_id = ? AND user_active = 1";
@@ -62,9 +62,9 @@ public class CK_DAO {
 	}
 
 	/*
-	 * user_number를 받아 해당 CK_User 객체 반환
+	 * user_number瑜� 諛쏆븘 �빐�떦 CK_User 媛앹껜 諛섑솚
 	 * parameter = user_number
-	 * return CK_User 객체
+	 * return CK_User 媛앹껜
 	 */
 	public CK_User setUserByUser_number(int user_number) {
 		CK_User user = null;
@@ -98,9 +98,9 @@ public class CK_DAO {
 	}
 
 	/*
-	 * user_id를 받아 해당 CK_User 객체 반환
+	 * user_id瑜� 諛쏆븘 �빐�떦 CK_User 媛앹껜 諛섑솚
 	 * parameter = user_id
-	 * return CK_User 객체
+	 * return CK_User 媛앹껜
 	 */
 	public CK_User setUserByUser_id(String user_id) {
 		CK_User user = null;
@@ -130,9 +130,9 @@ public class CK_DAO {
 	}
 
 	/*
-	 * 예매목록 DB에 추가
+	 * �삁留ㅻぉ濡� DB�뿉 異붽�
 	 * parameter = user_number, m_code, watch_date. 
-	 * return 1:완료, -2:서버오류
+	 * return 1:�셿猷�, -2:�꽌踰꾩삤瑜�
 	 */
 	public int ticketing(int user_number, int m_code, Date watch_date) {
 		SQL = "INSERT INTO TICKET_LIST VALUES (?, ?, SYSDATE, ?, (SELECT NVL(MAX(ticket_num),0))+1 FROM TICKET_LIST WHERE user_number = ?)";
@@ -151,9 +151,9 @@ public class CK_DAO {
 	}
 	
 	/*
-	 * 조회기준날짜와 영화코드로 CK_Movie객체 반환
-	 * parameter = m_code, blarRange(가칭)
-	 * return CK_Movie 객체
+	 * 議고쉶湲곗��궇吏쒖� �쁺�솕肄붾뱶濡� CK_Movie媛앹껜 諛섑솚
+	 * parameter = m_code, blarRange(媛�移�)
+	 * return CK_Movie 媛앹껜
 	 */
 	public CK_Movie setMovieByM_code(int m_code, String showRange) {
 		CK_Movie movie = null;
@@ -161,10 +161,10 @@ public class CK_DAO {
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, m_code);
-			pstmt.setString(2, showRange); // 조회기준일 변수변경
+			pstmt.setString(2, showRange); // 議고쉶湲곗��씪 蹂��닔蹂�寃�
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				movie = new CK_Movie(); // 조회기준일 추가
+				movie = new CK_Movie(); // 議고쉶湲곗��씪 異붽�
 				movie.setM_code(rs.getInt("m_code"));
 				movie.setM_title(rs.getString("m_title"));
 				movie.setOpen_dt(rs.getDate("open_dt"));
@@ -187,10 +187,10 @@ public class CK_DAO {
 		return movie;
 	}
 	
-	//INSERT INTO WATCHED_LIST VALUES (user_number, m_code, watch_date, watch_num); // 관람목록 추가하기
+	//INSERT INTO WATCHED_LIST VALUES (user_number, m_code, watch_date, watch_num); // 愿��엺紐⑸줉 異붽��븯湲�
 	
 	/*
-	 * DB 연결 닫기
+	 * DB �뿰寃� �떕湲�
 	 */
 	public void close() {
 		try {
