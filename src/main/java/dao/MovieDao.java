@@ -66,17 +66,17 @@ public void mergeMovieInfo(MovieInfo mi) {
 			+ "            m.price=m.price"
 			+ " WHEN NOT MATCHED THEN"
 			+ "    INSERT ("
-			+ "            showRange,"
-			+ "            m_code,"
-			+ "            m_title,"
-			+ "            open_dt,"
-			+ "            close_dt,"
-			+ "            genre_code,"
-			+ "            poster_path,"
-			+ "            rank,"
-			+ "            audi_acc,"
-			+ "            audits,"
-			+ "            price"
+			+ "            m.showRange,"
+			+ "            m.m_code,"
+			+ "            m.m_title,"
+			+ "            m.open_dt,"
+			+ "            m.close_dt,"
+			+ "            m.genre_code,"
+			+ "            m.poster_path,"
+			+ "            m.rank,"
+			+ "            m.audi_acc,"
+			+ "            m.audits,"
+			+ "            m.price"
 			+ "           )"
 			+ "    VALUES(?,?,?,?,?,?,?,?,?,?,12000)";
 		try {
@@ -163,7 +163,7 @@ public void mergeMovieInfo(MovieInfo mi) {
 		return movieInfo.getPoster_path();
 	}
 	
-	public List<MovieInfo> selectMovieInfo() {
+	public List<MovieInfo> selectMovieInfo(int code) {
 		String sqlQuery = "select m_title"
 				+ " ,to_char(open_dt,'YYYYMMDD') open_dt, to_char(close_dt+30,'YYYYMMDD') close_dt, rank , audi_acc , audits, price,rownum "
 				+ " from movie_info where m_code =? and rownum=1 order by showrange desc";
@@ -173,7 +173,7 @@ public void mergeMovieInfo(MovieInfo mi) {
 			MovieInfo movieInfo =null;
 			
 			psmt = conn.prepareStatement(sqlQuery);
-			psmt.setInt(1, 20226254);
+			psmt.setInt(1, code);
 			rs = psmt.executeQuery();
 			
 			movieInfoList = new ArrayList<MovieInfo>();
@@ -196,6 +196,70 @@ public void mergeMovieInfo(MovieInfo mi) {
 				movieInfo.setAudi_acc(rs.getInt("audi_acc"));
 				movieInfo.setAudits(rs.getString("audits"));
 				movieInfo.setPrice(rs.getInt("price"));
+				
+				movieInfoList.add(movieInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfoList;
+	}
+	
+	public String selectShowRange(){
+		String sql = "SELECT showRange, rownum "
+				+ " FROM movie_info "
+				+ " where showRange =(select max(showRange) from movie_info) and rownum=1 order by showRange desc";
+		MovieInfo movieInfo = null;
+		
+		try {
+			connect();
+			
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			
+			movieInfo = new MovieInfo();
+			if(rs.next()) {
+				movieInfo.setShowRange(rs.getString("showRange"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfo.getShowRange();
+	}
+	
+	//º¸·ù
+	public List<MovieInfo> selectMovieRankingList(String term) {
+		String sqlQuery = "select "
+				+ " showRange"
+				+ ", m_code"
+				+ ", m_title"
+				+ ", poster_path"
+				+ ", rank"
+				+ " from movie_info "
+				+ " where showRange =? order by showRange desc";
+		List<MovieInfo> movieInfoList = null;
+		try {
+			connect();
+			MovieInfo movieInfo =null;
+			
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, term);
+			rs = psmt.executeQuery();
+			
+			movieInfoList = new ArrayList<MovieInfo>();
+			while (rs.next()) {
+				movieInfo = new MovieInfo();
+				movieInfo.setShowRange(rs.getString("showRange"));
+				movieInfo.setM_code(rs.getInt("m_code"));
+				movieInfo.setM_title( rs.getString("m_title")) ;
+				movieInfo.setPoster_path("poster_path");
+				movieInfo.setRank(rs.getInt("rank"));
 				
 				movieInfoList.add(movieInfo);
 			}
