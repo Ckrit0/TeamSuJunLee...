@@ -3,7 +3,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="dao.SL_UserDAO"%>
-<%request.setCharacterEncoding("UTF-8");%>
+<%@page import="dto.SL_User"%>
+<%@ page import="dao.CK_DAO" %>
+<%@ page import="dto.CK_User" %>
+<%request.setCharacterEncoding("UTF-8");
+SL_UserDAO SL_Dao = new SL_UserDAO();
+CK_DAO CK_Dao2 = new CK_DAO();%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,16 +65,17 @@
     </div>
 	<%} else{
 			int CK_user_num = Integer.parseInt((String)session.getAttribute("CK_user_num"));
-			CK_User CK_user = CK_Dao.setUserByUser_number(CK_user_num);
+			CK_User CK_user = CK_Dao2.setUserByUser_number(CK_user_num);
 			%>
 		<div class="join_container">
         <h2>
             정보 수정
+            
         </h2>
-        <form method="post" action="./join_Action.jsp">
+        <form method="post" action="modify_Action.jsp">
             <h3>아이디</h3>
             <div class="joinID">
-                <p/>
+            <%=CK_user.getUser_id()%>
             </div>
             <h3>비밀번호</h3>
             <div class="joinPassword">
@@ -86,6 +92,8 @@
             
            <br>
            <input type="submit" class="bt_join" value="수정완료">
+         </form>
+         <form method="post" action="drop_Action.jsp">
 			<input type="submit" class="bt_join" value="탈퇴하기">
          </form>
     </div>

@@ -17,17 +17,26 @@ public class SL_UserDAO {
 	private String dbPW = "tiger";
 	private String SQL = "";
 
-	
-
 	public SL_UserDAO() {
 		// TODO Auto-generated constructor stub
+
 		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(dbURL, dbID, dbPW);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	// 중복여부 확인
 	public boolean ID_Check(String userID) {
 		try {
@@ -44,19 +53,19 @@ public class SL_UserDAO {
 		}
 		return false;
 	}
-	
+
 	// 회원가입
 	/*
-	 * -1: 서버오류
-	 * 0: 이미 존재하는 아이디
-	 * 1: 성공
+	 * -1: 서버오류 0: 이미 존재하는 아이디 1: 성공
 	 */
 	public int join(SL_User user) {
-		if(!ID_Check(user.getUser_ID())) return 0;
+		if (!ID_Check(user.getUser_ID()))
+			return 0;
 		int result = 0;
 		try {
-			PreparedStatement pst = conn.prepareStatement("INSERT INTO User_Member(USER_NUMBER, user_ID, user_Password, user_Date, user_Active) VALUES (seq_user_Number.nextval, ?, ?, ?, '1')");
-			
+			PreparedStatement pst = conn.prepareStatement(
+					"INSERT INTO User_Member(USER_NUMBER, user_ID, user_Password, user_Date, user_Active) VALUES (seq_user_Number.nextval, ?, ?, ?, '1')");
+
 			pst.setString(1, user.getUser_ID());
 			pst.setString(2, user.getUser_Password());
 			pst.setString(3, user.getUser_Date());
@@ -67,7 +76,7 @@ public class SL_UserDAO {
 		}
 		return result;
 	}
-	
+
 	// 유저 데이터 가져오기
 	public SL_User getUser(String userID) {
 		try {
@@ -87,26 +96,54 @@ public class SL_UserDAO {
 		}
 		return null;
 	}
-	
+
 	public int SL_update_User(String userPassword, String userDate, int user_Number) {
-		String sql = "UPDATE User_Member "
-			+ " SET user_Password = ?, user_Date = ?"
-			+ " WHERE user_Number = ?";
-		
-		int result = 0;
-		
+		String sql = "UPDATE User_Member " + " SET user_Password = ?, user_Date = ? WHERE user_Number = ?";
+		int result =0;
 		try {
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userPassword);
 			pstmt.setString(2, userDate);
 			pstmt.setInt(3, user_Number);
 			
 			result = pstmt.executeUpdate();
-			
+				System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return result;
+	}
+
+	public int UserNumber(String userID) {
+		try {
+			PreparedStatement pst = conn.prepareStatement("SELECT user_Number FROM User_Member WHERE user_ID = ?");
+			pst.setString(1, userID);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				SL_User user = new SL_User();
+				user.setUser_Number(rs.getInt("user_Number"));
+				return user.getUser_Number();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return 0;
+	}
+	
+	public int SL_Delete_User(String userActive, int user_Number) {
+		String sql = "UPDATE User_Member " + " SET userActive = 0, user_Date = sysdate WHERE user_Number = ?";
+		int result =0;
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user_Number);
+			
+			result = pstmt.executeUpdate();
+				System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		return result;
 	}
 }
-
