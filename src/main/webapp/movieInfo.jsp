@@ -24,6 +24,9 @@
 	String openDate = String.valueOf( MH_mi.getOpen_dt());
 	String closeDate = String.valueOf(MH_mi.getClose_dt());
 	%>
+	<img
+		src="https://image.tmdb.org/t/p/original<%=MH_mi.getPoster_path()%>"
+		width=200 height=300>
 	<h3><%=MH_mi.getM_title()%></h3>
 	<div>순위 : <%=MH_mi.getRank()%></div>
 	<div>장르 : <%=MH_mi.getGenreName()%></div>

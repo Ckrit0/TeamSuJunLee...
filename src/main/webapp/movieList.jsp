@@ -24,7 +24,11 @@ request.setCharacterEncoding("UTF-8");
 <!DOCTYPE html>
 <html>
 <body>
-	
+	<script>
+		function funcSubmit(){
+			document.getElementById("movieDetailForm").submit();
+		} 
+	</script>
 	<h2>영화순위</h2>
 	<br>
 	<%
@@ -44,14 +48,16 @@ request.setCharacterEncoding("UTF-8");
 	%>
 	<form id="movieDetailForm" name="movieDetailForm" method="post"
 		action="MH_selectMovieAction.jsp">
-		<input type="image" id="<%=MH_rankingList.get(i).getM_code()%>="
-			name="movieCd"
-			src="https://image.tmdb.org/t/p/original<%=dao.selectMovieImageBYCode(MH_rankingList.get(i).getM_code())%>"
-			width=150 height=200 style="cursor: pointer" alt="이미지 준비중"
-			value=<%=MH_rankingList.get(i).getM_code()%>> 
-		<input type="hidden" name="movieCd"	value="<%=MH_rankingList.get(i).getM_code()%>">
-		<h3><%=MH_rankingList.get(i).getRank() %></h3>
-		<h4><%=MH_rankingList.get(i).getM_title()%></h4>
+<%-- 		<input type="image" id="<%=MH_rankingList.get(i).getM_code()%>=" --%>
+<!-- 			name="movieCd" -->
+<%-- 			src="https://image.tmdb.org/t/p/original<%=dao.selectMovieImageBYCode(MH_rankingList.get(i).getM_code())%>" --%>
+<!-- 			width=150 height=200 style="cursor: pointer" alt="이미지 준비중" -->
+<%-- 			value=<%=MH_rankingList.get(i).getM_code()%>>  --%>
+
+		<input type="hidden" name="movieCd"	onclick="funcSubmit();" value="<%=MH_rankingList.get(i).getM_code()%>">
+		<button type="submit" style="-webkit-appearance: none;
+  -moz-appearance: none; appearance: none;"><%=MH_rankingList.get(i).getM_title()%></button>
+<%-- 		<h4><%=MH_rankingList.get(i).getM_title()%></h4> --%>
 		<br>
 	</form>
 	<%
