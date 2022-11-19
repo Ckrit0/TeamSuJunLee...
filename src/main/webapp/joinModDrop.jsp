@@ -93,8 +93,14 @@ CK_DAO CK_Dao2 = new CK_DAO();%>
            <br>
            <input type="submit" class="bt_join" value="수정완료">
          </form>
+           <br>
          <form method="post" action="drop_Action.jsp">
+         <h3>탈퇴하기</h3>
+            <div class="joinPassword">
+                <input type="password" class="input" placeholder="비밀번호" name="userPassword" title="비밀번호" maxlength="20">
+            </div>
 			<input type="submit" class="bt_join" value="탈퇴하기">
+			
          </form>
     </div>
 	<%} %>

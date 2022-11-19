@@ -12,14 +12,19 @@ public class SL_UserDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	private String dbURL = "jdbc:oracle:thin:@localhost:1521:xe";
+	private String dbURL = "jdbc:oracle:thin:@localhost:1521:orcl";
 	private String dbID = "scott";
 	private String dbPW = "tiger";
 	private String SQL = "";
 
 	public SL_UserDAO() {
 		// TODO Auto-generated constructor stub
+		connect();
+		
+	}
 
+	private void connect() {
+		// TODO Auto-generated method stub
 		try {
 			if (rs != null) {
 				rs.close();
@@ -39,6 +44,7 @@ public class SL_UserDAO {
 
 	// 중복여부 확인
 	public boolean ID_Check(String userID) {
+		connect();
 		try {
 			pstmt = conn.prepareStatement("SELECT * FROM User_Member WHERE user_ID = ?");
 			pstmt.setString(1, userID);
@@ -59,6 +65,7 @@ public class SL_UserDAO {
 	 * -1: 서버오류 0: 이미 존재하는 아이디 1: 성공
 	 */
 	public int join(SL_User user) {
+		connect();
 		if (!ID_Check(user.getUser_ID()))
 			return 0;
 		int result = 0;
@@ -79,6 +86,7 @@ public class SL_UserDAO {
 
 	// 유저 데이터 가져오기
 	public SL_User getUser(String userID) {
+		connect();
 		try {
 			PreparedStatement pst = conn.prepareStatement("SELECT * FROM User_Member WHERE user_ID = ?");
 			pst.setString(1, userID);
@@ -98,6 +106,7 @@ public class SL_UserDAO {
 	}
 
 	public int SL_update_User(String userPassword, String userDate, int user_Number) {
+		connect();
 		String sql = "UPDATE User_Member " + " SET user_Password = ?, user_Date = ? WHERE user_Number = ?";
 		int result =0;
 		try {
@@ -115,7 +124,24 @@ public class SL_UserDAO {
 		return result;
 	}
 
+	public int SL_Delete_User(int user_Number) {
+		connect();
+		String sql = "UPDATE User_Member SET user_Active = 0, user_out_date = sysdate WHERE user_Number = ?";
+		int result = 0;
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user_Number);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return result;
+	}
+	
 	public int UserNumber(String userID) {
+		connect();
 		try {
 			PreparedStatement pst = conn.prepareStatement("SELECT user_Number FROM User_Member WHERE user_ID = ?");
 			pst.setString(1, userID);
@@ -131,19 +157,20 @@ public class SL_UserDAO {
 		return 0;
 	}
 	
-	public int SL_Delete_User(String userActive, int user_Number) {
-		String sql = "UPDATE User_Member " + " SET userActive = 0, user_Date = sysdate WHERE user_Number = ?";
-		int result =0;
+	public String getUserPassword(int userNum) {
+		connect();
 		try {
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, user_Number);
-			
-			result = pstmt.executeUpdate();
-				System.out.println(result);
+			PreparedStatement pst = conn.prepareStatement("SELECT user_Password FROM User_Member WHERE user_Number = ?");
+			pst.setInt(1, userNum);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				SL_User user = new SL_User();
+				user.setUser_Password(rs.getString("user_Password"));
+				return user.getUser_Password();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		return result;
+		}
+		return null;
 	}
 }

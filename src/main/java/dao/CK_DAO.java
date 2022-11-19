@@ -17,7 +17,7 @@ public class CK_DAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	private String dbURL = "jdbc:oracle:thin:@localhost:1521:xe";
+	private String dbURL = "jdbc:oracle:thin:@localhost:1521:orcl";
 	private String dbID = "scott";
 	private String dbPW = "tiger";
 	private String SQL = "";

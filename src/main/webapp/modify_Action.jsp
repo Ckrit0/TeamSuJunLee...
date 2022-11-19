@@ -18,8 +18,7 @@ request.setCharacterEncoding("UTF-8");
 
 <body>
 	<%
-// 	String id =(String)session.getAttribute("SL_userId");
-	String user_ID = request.getParameter("userID");
+			String user_ID = request.getParameter("userID");
 			String user_Password = request.getParameter("userPassword");
 			String user_Password_re = request.getParameter("userPassword_re");
 			String user_Date = request.getParameter("userDate");
