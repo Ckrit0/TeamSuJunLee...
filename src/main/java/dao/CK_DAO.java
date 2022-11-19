@@ -1,7 +1,3 @@
-/**
- * �꼫臾� �옦�� connect�� close�뒗 �젒�냽�삤瑜섎�� 諛쒖깮 �븷 �닔 �엳�뒿�땲�떎.
- * 洹멸쾬�룄 紐⑤Ⅴ怨� 肄붾뱶留� 怨꾩냽 �닔�젙�븿..
- */
 package dao;
 
 import java.sql.Connection;
@@ -51,16 +47,6 @@ public class CK_DAO {
 		return -2;
 	}
 
-	/*
-<<<<<<< HEAD
-	 * user_number瑜� 諛쏆븘 �빐�떦 CK_User 媛앹껜 諛섑솚 parameter = user_number return CK_User
-	 * 媛앹껜
-=======
-	 * user_number瑜� 諛쏆븘 �빐�떦 CK_User 媛앹껜 諛섑솚
-	 * parameter = user_number
-	 * return CK_User 媛앹껜
->>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
-	 */
 	public CK_User setUserByUser_number(int user_number) {
 		connect();
 		CK_User user = null;
@@ -93,15 +79,6 @@ public class CK_DAO {
 		return user;
 	}
 
-	/*
-<<<<<<< HEAD
-	 * user_id瑜� 諛쏆븘 �빐�떦 CK_User 媛앹껜 諛섑솚 parameter = user_id return CK_User 媛앹껜
-=======
-	 * user_id瑜� 諛쏆븘 �빐�떦 CK_User 媛앹껜 諛섑솚
-	 * parameter = user_id
-	 * return CK_User 媛앹껜
->>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
-	 */
 	public CK_User setUserByUser_id(String user_id) {
 		connect();
 		CK_User user = null;
@@ -130,16 +107,6 @@ public class CK_DAO {
 		return user;
 	}
 
-	/*
-<<<<<<< HEAD
-	 * �삁留ㅻぉ濡� DB�뿉 異붽� parameter = user_number, m_code, watch_date. return 1:�셿猷�,
-	 * -2:�꽌踰꾩삤瑜�
-=======
-	 * �삁留ㅻぉ濡� DB�뿉 異붽�
-	 * parameter = user_number, m_code, watch_date. 
-	 * return 1:�셿猷�, -2:�꽌踰꾩삤瑜�
->>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
-	 */
 	public int ticketing(int user_number, int m_code, Date watch_date) {
 		connect();
 		SQL = "INSERT INTO TICKET_LIST VALUES (?, ?, SYSDATE, ?, (SELECT NVL(MAX(ticket_num),0)+1 FROM TICKET_LIST WHERE user_number = ?))";
@@ -157,15 +124,6 @@ public class CK_DAO {
 		return -2;
 	}
 
-	/*
-<<<<<<< HEAD
-	 * 議고쉶湲곗��궇吏쒖� �쁺�솕肄붾뱶濡� CK_Movie媛앹껜 諛섑솚 parameter = m_code, blarRange(媛�移�)
-=======
-	 * 議고쉶湲곗��궇吏쒖� �쁺�솕肄붾뱶濡� CK_Movie媛앹껜 諛섑솚
-	 * parameter = m_code, blarRange(媛�移�)
->>>>>>> branch 'develop' of https://github.com/Ckrit0/TeamSuJunLee....git
-	 * return CK_Movie 媛앹껜
-	 */
 	public CK_Movie setMovieByM_code(String m_code) {
 		connect();
 		CK_Movie movie = null;
@@ -257,9 +215,6 @@ public class CK_DAO {
 
 	}
 
-	/*
-	 * DB �뿰寃� �떕湲�
-	 */
 	public void close() {
 		try {
 			if (rs != null) {
