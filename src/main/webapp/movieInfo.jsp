@@ -20,14 +20,21 @@
  		
 	List<MovieInfo> MH_movieInfo = MH_dao.selectMovieInfo(Integer.parseInt(MH_code)); 
 	
-	for(MovieInfo MH_mi : MH_movieInfo) {%>
-		<h3><%=MH_mi.getM_title()%></h3> 
-	<div><%=MH_mi.getOpen_dt()%></div>
-	<div><%=MH_mi.getClose_dt()%></div> 
-	<div><%=MH_mi.getRank()%></div>
-	<div><%=MH_mi.getAudi_acc()%></div>
-	<div><%=MH_mi.getAudits()%></div> 
-	<div><%=MH_mi.getPrice()%></div> 
+	for(MovieInfo MH_mi : MH_movieInfo) {
+	String openDate = String.valueOf( MH_mi.getOpen_dt());
+	String closeDate = String.valueOf(MH_mi.getClose_dt());
+	%>
+	<img
+		src="https://image.tmdb.org/t/p/original<%=MH_mi.getPoster_path()%>"
+		width=200 height=300>
+	<h3><%=MH_mi.getM_title()%></h3>
+	<div>순위 : <%=MH_mi.getRank()%></div>
+	<div>장르 : <%=MH_mi.getGenreName()%></div>
+	<div><%=MH_mi.getAudits()%></div>
+	<div>누적 관객 수 : <%=MH_mi.getAudi_acc()%></div>
+	<div>개봉일 : <%=openDate.substring(0, 10)%></div>
+	<div>마감일 : <%=closeDate.substring(0, 10)%></div>
+	<div>가격 : <%=MH_mi.getPrice()%></div>
 	<br>  
 	<%} }%> 
  	
