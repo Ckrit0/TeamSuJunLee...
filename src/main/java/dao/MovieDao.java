@@ -18,7 +18,7 @@ public class MovieDao {
 	ResultSet rs = null;
 
 	public void connect() throws Exception {
-		String db_url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 접속 DB정보
+		String db_url = "jdbc:oracle:thin:@localhost:1521:xe"; // 접속 DB정보
 		String db_id = "scott"; // 접속 아이디
 		String db_pw = "tiger"; // 접속 아이디의 비밀번호
 
@@ -164,9 +164,10 @@ public void mergeMovieInfo(MovieInfo mi) {
 	}
 	
 	public List<MovieInfo> selectMovieInfo(int code) {
-		String sqlQuery = "select m_title"
-				+ " ,to_char(open_dt,'YYYYMMDD') open_dt, to_char(close_dt+30,'YYYYMMDD') close_dt, rank , audi_acc , audits, price,rownum "
-				+ " from movie_info where m_code =? and rownum=1 order by showrange desc";
+		String sqlQuery = "select m.m_title ,to_char(m.open_dt,'YYYYMMDD') open_dt, to_char(m.close_dt+30,'YYYYMMDD') close_dt,"
+				+ "		 m.genre_code, m.poster_path ,m.rank , m.audi_acc , m.audits, m.price,rownum, g.genre_name"
+				+ "		 from movie_info m, genre g where m.genre_code = g.genre_code and m.m_code =?"
+				+ " and showrange=(select max(showRange) from movie_info) order by showrange,rank";
 		List<MovieInfo> movieInfoList = null;
 		try {
 			connect();
@@ -192,10 +193,13 @@ public void mergeMovieInfo(MovieInfo mi) {
 				int month2 = Integer.parseInt(yyyymmdd2.substring(4, 6));
 				int day2 = Integer.parseInt(yyyymmdd2.substring(6));
 				movieInfo.setClose_dt(LocalDateTime.of(year2, month2,day2, 0, 0));
+				movieInfo.setGenre_code(rs.getInt("genre_code"));
+				movieInfo.setPoster_path(rs.getString("poster_path"));
 				movieInfo.setRank(rs.getInt("rank"));
 				movieInfo.setAudi_acc(rs.getInt("audi_acc"));
 				movieInfo.setAudits(rs.getString("audits"));
 				movieInfo.setPrice(rs.getInt("price"));
+				movieInfo.setGenreName(rs.getString("genre_name"));
 				
 				movieInfoList.add(movieInfo);
 			}
@@ -242,7 +246,7 @@ public void mergeMovieInfo(MovieInfo mi) {
 				+ ", poster_path"
 				+ ", rank"
 				+ " from movie_info "
-				+ " where showRange =? order by showRange desc";
+				+ " where showRange =? order by showRange ,rank";
 		List<MovieInfo> movieInfoList = null;
 		try {
 			connect();
