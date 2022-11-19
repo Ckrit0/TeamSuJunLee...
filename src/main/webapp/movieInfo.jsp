@@ -29,9 +29,7 @@
 	<div><%=MH_mi.getAudits()%></div> 
 	<div><%=MH_mi.getPrice()%></div> 
 	<br>  
-	<%} } 
-	session.removeAttribute("MH_movieCd"); 
- 	%> 
+	<%} }%> 
  	
 
 

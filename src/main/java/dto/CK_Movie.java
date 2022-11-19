@@ -11,7 +11,7 @@ public class CK_Movie {
 	private String poster_path;
 	private int rank;
 	private int audi_acc;
-	private int audits;
+	private String audits;
 	private int price;
 	
 	public int getM_code() {
@@ -36,7 +36,8 @@ public class CK_Movie {
 		return close_dt;
 	}
 	public void setClose_dt(Date close_dt) {
-		this.close_dt = close_dt;
+		Date temp = new Date(close_dt.getYear(), close_dt.getMonth(), close_dt.getDate()+30);
+		this.close_dt = temp;
 	}
 	public int getGenre_code() {
 		return genre_code;
@@ -62,10 +63,10 @@ public class CK_Movie {
 	public void setAudi_acc(int audi_acc) {
 		this.audi_acc = audi_acc;
 	}
-	public int getAudits() {
+	public String getAudits() {
 		return audits;
 	}
-	public void setAudits(int audits) {
+	public void setAudits(String audits) {
 		this.audits = audits;
 	}
 	public int getPrice() {
