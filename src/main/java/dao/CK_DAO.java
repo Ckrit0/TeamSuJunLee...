@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.CK_Movie;
+import dto.CK_TicketedMovie;
 import dto.CK_User;
 
 public class CK_DAO {
@@ -197,12 +198,73 @@ public class CK_DAO {
 		pstmt.setDate(3, watch_date);
 		pstmt.setInt(4, user_number);
 		rs = pstmt.executeQuery();
-		SQL = "DELETE INTO TICKET_LIST WHERE user_number = ?";
+		SQL = "DELETE FROM TICKET_LIST WHERE user_number = ? AND watch_date < sysdate";
 		pstmt = conn.prepareStatement(SQL);
 		pstmt.setInt(1, user_number);
 		rs = pstmt.executeQuery();
 	}
 	
+	public List<CK_TicketedMovie> ticketedMovieList(String userNum){
+		connect();
+		List<CK_TicketedMovie> tList = new ArrayList<CK_TicketedMovie>();
+		SQL = "SELECT * FROM TICKET_LIST WHERE user_number = ? ORDER BY watch_date";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, userNum);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				CK_TicketedMovie tMovie = new CK_TicketedMovie();
+				tMovie.setT_num(rs.getInt("ticket_num"));
+				tMovie.setM_code(rs.getInt("m_code"));
+				tMovie.setTicketDate(rs.getDate("ticket_date"));
+				tMovie.setWatchDate(rs.getDate("watch_date"));
+				tList.add(tMovie);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			close();
+		}
+		return tList;
+	}
+	
+	public List<CK_TicketedMovie> watchedMovieList(String userNum){
+		connect();
+		List<CK_TicketedMovie> tList = new ArrayList<CK_TicketedMovie>();
+		SQL = "SELECT * FROM WATCHED_LIST WHERE user_number = ? ORDER BY watch_date";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, userNum);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				CK_TicketedMovie tMovie = new CK_TicketedMovie();
+				tMovie.setT_num(rs.getInt("watch_num"));
+				tMovie.setM_code(rs.getInt("m_code"));
+				tMovie.setWatchDate(rs.getDate("watch_date"));
+				tList.add(tMovie);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			close();
+		}
+		return tList;
+	}
+	
+	public void cancelTicket(String userNum ,int tNum) {
+		connect();
+		SQL = "DELETE FROM TICKET_LIST WHERE user_number = ? AND ticket_num = ?";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, userNum);
+			pstmt.setInt(2, tNum);
+			rs = pstmt.executeQuery();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			close();
+		}
+	}
 	
 	public void connect() {
 		try {

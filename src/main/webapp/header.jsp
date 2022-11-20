@@ -58,7 +58,7 @@ CK_DAO CK_Dao = new CK_DAO();
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item"><%=CK_user.getUser_id()%>님 반갑습니다.</li>
 					</ul>
-				<a href="member.jsp">
+				<a href="member.jsp?tpage=1&wpage=1">
 					<button class="btn btn-outline-success nav-item"
 						style="padding: 16px;" type="button">예매내역</button>
 				</a>

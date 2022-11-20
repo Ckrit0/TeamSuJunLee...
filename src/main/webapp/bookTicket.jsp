@@ -1,5 +1,3 @@
-<%-- 영화 예매를 담당하는 jsp파일
-	담당자: 홍준표 --%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="dto.CK_Movie"%>
@@ -15,7 +13,7 @@
 	<%
 	if (session.getAttribute("MH_movieCd") == null) {
 	%>
-	<div>영화 선택 자비점..</div>
+	<h2>영화 선택 후, 예매가 가능합니다.</h2>
 	<%
 	} else {
 	String movieCode = (String) session.getAttribute("MH_movieCd");
