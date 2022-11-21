@@ -1,10 +1,8 @@
 package dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class MovieInfo {
-	private String showRange;
 	private int m_code;
 	private String m_title;
 	private LocalDateTime open_dt;
@@ -13,21 +11,8 @@ public class MovieInfo {
 	private String poster_path;
 	private int rank;
 	private int audi_acc;
-	private String audits;
-	private String genreName;
+	private int audits;
 	
-	public String getGenreName() {
-		return genreName;
-	}
-	public void setGenreName(String genreName) {
-		this.genreName = genreName;
-	}
-	public String getShowRange() {
-		return showRange;
-	}
-	public void setShowRange(String showRange) {
-		this.showRange = showRange;
-	}
 	public int getM_code() {
 		return m_code;
 	}
@@ -40,7 +25,6 @@ public class MovieInfo {
 	public void setM_title(String m_title) {
 		this.m_title = m_title;
 	}
-	
 	
 	public LocalDateTime getOpen_dt() {
 		return open_dt;
@@ -78,10 +62,10 @@ public class MovieInfo {
 	public void setAudi_acc(int audi_acc) {
 		this.audi_acc = audi_acc;
 	}
-	public String getAudits() {
+	public int getAudits() {
 		return audits;
 	}
-	public void setAudits(String audits) {
+	public void setAudits(int audits) {
 		this.audits = audits;
 	}
 	public int getPrice() {
@@ -94,14 +78,10 @@ public class MovieInfo {
 
 	@Override
 	public String toString() {
-		return "MovieInfo [showRange=" + showRange + ", m_code=" + m_code + ", m_title=" + m_title + ", open_dt="
-				+ open_dt + ", close_dt=" + close_dt + ", genre_code=" + genre_code + ", poster_path=" + poster_path
-				+ ", rank=" + rank + ", audi_acc=" + audi_acc + ", audits=" + audits + ", price=" + price + "]";
+		return "MovieInfo [m_code=" + m_code + ", m_title=" + m_title + ", open_dt=" + open_dt + ", close_dt="
+				+ close_dt + ", genre_code=" + genre_code + ", poster_path=" + poster_path + ", rank=" + rank
+				+ ", audi_acc=" + audi_acc + ", audits=" + audits + ", price=" + price + "]";
 	}
-
-	
-
-	
 	
 	
 }

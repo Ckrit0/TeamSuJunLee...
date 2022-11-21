@@ -1,33 +1,19 @@
 package dto;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
-public class MovieInfo {
-	private String showRange;
+public class CK_Movie {
 	private int m_code;
 	private String m_title;
-	private LocalDateTime open_dt;
-	private LocalDateTime close_dt;
+	private Date open_dt;
+	private Date close_dt;
 	private int genre_code;
 	private String poster_path;
 	private int rank;
 	private int audi_acc;
 	private String audits;
-	private String genreName;
+	private int price;
 	
-	public String getGenreName() {
-		return genreName;
-	}
-	public void setGenreName(String genreName) {
-		this.genreName = genreName;
-	}
-	public String getShowRange() {
-		return showRange;
-	}
-	public void setShowRange(String showRange) {
-		this.showRange = showRange;
-	}
 	public int getM_code() {
 		return m_code;
 	}
@@ -40,19 +26,18 @@ public class MovieInfo {
 	public void setM_title(String m_title) {
 		this.m_title = m_title;
 	}
-	
-	
-	public LocalDateTime getOpen_dt() {
+	public Date getOpen_dt() {
 		return open_dt;
 	}
-	public void setOpen_dt(LocalDateTime open_dt) {
+	public void setOpen_dt(Date open_dt) {
 		this.open_dt = open_dt;
 	}
-	public LocalDateTime getClose_dt() {
+	public Date getClose_dt() {
 		return close_dt;
 	}
-	public void setClose_dt(LocalDateTime close_dt) {
-		this.close_dt = close_dt;
+	public void setClose_dt(Date close_dt) {
+		Date temp = new Date(close_dt.getYear(), close_dt.getMonth(), close_dt.getDate()+30);
+		this.close_dt = temp;
 	}
 	public int getGenre_code() {
 		return genre_code;
@@ -90,18 +75,4 @@ public class MovieInfo {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	private int price;
-
-	@Override
-	public String toString() {
-		return "MovieInfo [showRange=" + showRange + ", m_code=" + m_code + ", m_title=" + m_title + ", open_dt="
-				+ open_dt + ", close_dt=" + close_dt + ", genre_code=" + genre_code + ", poster_path=" + poster_path
-				+ ", rank=" + rank + ", audi_acc=" + audi_acc + ", audits=" + audits + ", price=" + price + "]";
-	}
-
-	
-
-	
-	
-	
 }

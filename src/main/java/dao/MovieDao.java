@@ -5,8 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import dto.MovieInfo;
 
 public class MovieDao {
 	Connection conn = null;
@@ -42,15 +46,85 @@ public class MovieDao {
 			e.printStackTrace();
 		}
 	}
-//	public void insertMovieInfo(TmdbData tmdb) {
+	
+public void mergeMovieInfo(MovieInfo mi) {
+		
+	String sqlQuery = "MERGE INTO movie_info m"
+			+ " USING dual"
+			+ " ON (m.showRange = to_char(sysdate,'YYYYMMDD~YYYYMMDD'))"
+			+ " WHEN MATCHED THEN"
+			+ "    UPDATE SET "
+			+ "            m.m_code=m.m_code,"
+			+ "            m.m_title=m.m_title,"
+			+ "            m.open_dt =m.open_dt,"
+			+ "            m.close_dt=m.close_dt,"
+			+ "            m.genre_code=m.genre_code,"
+			+ "            m.poster_path=m.poster_path,"
+			+ "            m.rank=m.rank,"
+			+ "            m.audi_acc=m.audi_acc,"
+			+ "            m.audits=m.audits,"
+			+ "            m.price=m.price"
+			+ " WHEN NOT MATCHED THEN"
+			+ "    INSERT ("
+			+ "            m.showRange,"
+			+ "            m.m_code,"
+			+ "            m.m_title,"
+			+ "            m.open_dt,"
+			+ "            m.close_dt,"
+			+ "            m.genre_code,"
+			+ "            m.poster_path,"
+			+ "            m.rank,"
+			+ "            m.audi_acc,"
+			+ "            m.audits,"
+			+ "            m.price"
+			+ "           )"
+			+ "    VALUES(?,?,?,?,?,?,?,?,?,?,12000)";
+		try {
+			connect();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, mi.getShowRange());
+			psmt.setInt(2, mi.getM_code());  
+			psmt.setString(3, mi.getM_title());
+			psmt.setTimestamp(4, Timestamp.valueOf(mi.getOpen_dt()));
+			psmt.setTimestamp(5, Timestamp.valueOf(mi.getClose_dt()));
+			psmt.setInt(6, mi.getGenre_code());
+			psmt.setString(7, mi.getPoster_path());
+			psmt.setInt(8, mi.getRank());
+			psmt.setInt(9, mi.getAudi_acc());
+			psmt.setString(10, mi.getAudits());
+
+			int resultCnt = psmt.executeUpdate(); // executeQuery -> Select -> ResultSet
+			// executeUpdate -> insert, delete, update -> int
+			if(resultCnt>0) {
+			System.out.println("merge 성공");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			disConnect();
+	}
+	}
+
+
+//	public void insertMovieInfo(MovieInfo mi) {
 //		
-//		String sqlQuery = "INSERT INTO movie_info VALUES( ?, ?)";
+//		String sqlQuery = "INSERT INTO movie_info VALUES( ?,?, ?,?,?,?,?,?,?,?,12000)";
 //		try {
 //			connect();
 //			psmt = conn.prepareStatement(sqlQuery);
-//		
-//			psmt.setString(1, tmdb.title);  
-//			psmt.setString(2, tmdb.poster_path);
+//			
+//			psmt.setString(1, mi.getShowRange());
+//			psmt.setInt(2, mi.getM_code());  
+//			psmt.setString(3, mi.getM_title());
+//			psmt.setTimestamp(4, Timestamp.valueOf(mi.getOpen_dt()));
+//			psmt.setTimestamp(5, Timestamp.valueOf(mi.getClose_dt()));
+//			psmt.setInt(6, mi.getGenre_code());
+//			psmt.setString(7, mi.getPoster_path());
+//			psmt.setInt(8, mi.getRank());
+//			psmt.setInt(9, mi.getAudi_acc());
+//			psmt.setString(10, mi.getAudits());
+////			psmt.setInt(10, mi.getPrice());  
 //
 //			int resultCnt = psmt.executeUpdate();
 //			if(resultCnt > 0) {
@@ -64,29 +138,142 @@ public class MovieDao {
 //			disConnect();
 //		}
 //	}
-//	public List<TmdbData> selectTmdbStatus() {
-//		String sqlQuery = "select * from movie_info";
-//		List<TmdbData> tmdbList = null;
-//		try {
-//			connect();
-//			psmt = conn.prepareStatement(sqlQuery);
-//			rs = psmt.executeQuery();
-//			
-//			tmdbList = new ArrayList<TmdbData>();
-//			while (rs.next()) {
-//				TmdbData tmdb = new TmdbData();
-//				tmdb.title = rs.getString("title");
-//				tmdb.poster_path = rs.getString("poster_path");
-//				
-//				tmdbList.add(tmdb);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			disConnect();
-//		}
-//		return tmdbList;
-//	}
+	
+	public String selectMovieImageBYCode(int code){
+		String sql = "SELECT poster_path FROM movie_info WHERE m_code = ?";
+		MovieInfo movieInfo = null;
+		
+		try {
+			connect();
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, code);
+			rs = psmt.executeQuery();
+			
+			movieInfo = new MovieInfo();
+			if(rs.next()) {
+//				movieInfo.set(rs.getInt("m_code"));
+				movieInfo.setPoster_path(rs.getString("poster_path"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfo.getPoster_path();
+	}
+	
+	public List<MovieInfo> selectMovieInfo(int code) {
+		String sqlQuery = "select m.m_title ,to_char(m.open_dt,'YYYYMMDD') open_dt, to_char(m.close_dt+30,'YYYYMMDD') close_dt,"
+				+ "		 m.genre_code, m.poster_path ,m.rank , m.audi_acc , m.audits, m.price,rownum, g.genre_name"
+				+ "		 from movie_info m, genre g where m.genre_code = g.genre_code and m.m_code =?"
+				+ " and showrange=(select max(showRange) from movie_info) order by showrange,rank";
+		List<MovieInfo> movieInfoList = null;
+		try {
+			connect();
+			MovieInfo movieInfo =null;
+			
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setInt(1, code);
+			rs = psmt.executeQuery();
+			
+			movieInfoList = new ArrayList<MovieInfo>();
+			while (rs.next()) {
+				movieInfo = new MovieInfo();
+				movieInfo.setM_title( rs.getString("m_title")) ;
+				String yyyymmdd = rs.getString("open_dt");
+				
+				int year = Integer.parseInt(yyyymmdd.substring(0, 4));
+				int month = Integer.parseInt(yyyymmdd.substring(4, 6));
+				int day = Integer.parseInt(yyyymmdd.substring(6));
+				movieInfo.setOpen_dt(LocalDateTime.of(year, month,day, 0, 0));
+				
+				String yyyymmdd2 = rs.getString("close_dt");
+				int year2 = Integer.parseInt(yyyymmdd2.substring(0, 4));
+				int month2 = Integer.parseInt(yyyymmdd2.substring(4, 6));
+				int day2 = Integer.parseInt(yyyymmdd2.substring(6));
+				movieInfo.setClose_dt(LocalDateTime.of(year2, month2,day2, 0, 0));
+				movieInfo.setGenre_code(rs.getInt("genre_code"));
+				movieInfo.setPoster_path(rs.getString("poster_path"));
+				movieInfo.setRank(rs.getInt("rank"));
+				movieInfo.setAudi_acc(rs.getInt("audi_acc"));
+				movieInfo.setAudits(rs.getString("audits"));
+				movieInfo.setPrice(rs.getInt("price"));
+				movieInfo.setGenreName(rs.getString("genre_name"));
+				
+				movieInfoList.add(movieInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfoList;
+	}
+	
+	public String selectShowRange(){
+		String sql = "SELECT showRange, rownum "
+				+ " FROM movie_info "
+				+ " where showRange =(select max(showRange) from movie_info) and rownum=1 order by showRange desc";
+		MovieInfo movieInfo = null;
+		
+		try {
+			connect();
+			
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			
+			movieInfo = new MovieInfo();
+			if(rs.next()) {
+				movieInfo.setShowRange(rs.getString("showRange"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfo.getShowRange();
+	}
+	
+	//보류
+	public List<MovieInfo> selectMovieRankingList(String term) {
+		String sqlQuery = "select "
+				+ " showRange"
+				+ ", m_code"
+				+ ", m_title"
+				+ ", poster_path"
+				+ ", rank"
+				+ " from movie_info "
+				+ " where showRange =? order by showRange ,rank";
+		List<MovieInfo> movieInfoList = null;
+		try {
+			connect();
+			MovieInfo movieInfo =null;
+			
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, term);
+			rs = psmt.executeQuery();
+			
+			movieInfoList = new ArrayList<MovieInfo>();
+			while (rs.next()) {
+				movieInfo = new MovieInfo();
+				movieInfo.setShowRange(rs.getString("showRange"));
+				movieInfo.setM_code(rs.getInt("m_code"));
+				movieInfo.setM_title( rs.getString("m_title")) ;
+				movieInfo.setPoster_path("poster_path");
+				movieInfo.setRank(rs.getInt("rank"));
+				
+				movieInfoList.add(movieInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disConnect();
+		}
+		return movieInfoList;
+	}
 }
