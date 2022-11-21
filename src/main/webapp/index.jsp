@@ -18,6 +18,12 @@ request.setCharacterEncoding("UTF-8");
 	rel="stylesheet"
 	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
 	crossorigin="anonymous">
+<style>
+	*{
+		
+		
+	}
+</style>
 </head>
 <body>
 	<%@ include file="header.jsp"%>

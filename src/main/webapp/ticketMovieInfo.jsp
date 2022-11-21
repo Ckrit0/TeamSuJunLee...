@@ -12,16 +12,21 @@ request.setCharacterEncoding("UTF-8");
 <html>
 <body>
 
-	<h2>예매 및 관람영화 상세페이지</h2>
+	
 
 	<%
-	MovieDao MH_dao = new MovieDao();
-
-	List<MovieInfo> MH_movieInfo = MH_dao.selectMovieInfo(20228532);
-
-	for (MovieInfo MH_mi : MH_movieInfo) {
-		String openDate = String.valueOf(MH_mi.getOpen_dt());
-		String closeDate = String.valueOf(MH_mi.getClose_dt());
+	String MH_code = (String)session.getAttribute("MH_movieCd"); 
+	if(MH_code == null ){%> 
+	<div>예매목록</div> 
+	<% }else{%>
+		<h2>예매 및 관람영화 상세페이지</h2>
+	<%MovieDao MH_dao = new MovieDao(); 
+ 		
+	List<MovieInfo> MH_movieInfo = MH_dao.selectMovieInfo(Integer.parseInt(MH_code)); 
+	
+	for(MovieInfo MH_mi : MH_movieInfo) {
+	String openDate = String.valueOf( MH_mi.getOpen_dt());
+	String closeDate = String.valueOf(MH_mi.getClose_dt());
 	%>
 	<img
 		src="https://image.tmdb.org/t/p/original<%=MH_mi.getPoster_path()%>"
@@ -34,9 +39,7 @@ request.setCharacterEncoding("UTF-8");
 	<div>개봉일 : <%=openDate.substring(0, 10)%></div>
 	<div>마감일 : <%=closeDate.substring(0, 10)%></div>
 	<div>가격 : <%=MH_mi.getPrice()%></div>
-	<br>
-	<%
-	}
-	%>
+	<br>  
+	<%} }%> 
 </body>
 </html>
