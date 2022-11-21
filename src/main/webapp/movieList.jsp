@@ -27,6 +27,11 @@ request.setCharacterEncoding("UTF-8");
 #movieName {
 	background-color: transparent;
 	border: none;
+
+}
+#clickEmotion{
+opacity : 0.6;
+scale: 1.4;
 }
 </style>
 <body>
@@ -42,7 +47,8 @@ request.setCharacterEncoding("UTF-8");
 	int dd = cal.get(Calendar.DATE) - 1;
 	String today = yyyy + "" + mm + "" + dd + "~" + yyyy + "" + mm + "" + dd;
 	String dateComparison = dao.selectShowRange();
-
+	
+	String mcode = (String)session.getAttribute("MH_movieCd");
 	if (today.equals(dateComparison)) {
 		List<MovieInfo> MH_rankingList = dao.selectMovieRankingList(dateComparison);
 		for (int i = 0; i < MH_rankingList.size(); i++) {
@@ -52,9 +58,15 @@ request.setCharacterEncoding("UTF-8");
 		<%-- 		<span><%=MH_rankingList.get(i).getRank()%>위</span> --%>
 		<input type="hidden" name="movieCd"
 			value="<%=MH_rankingList.get(i).getM_code()%>">
+			<%if(String.valueOf(mcode).equals(String.valueOf(MH_rankingList.get(i).getM_code()))){ %>
+			<div id="clickEmotion">
+			<%} %>
 		<button type="submit" id="movieName"><%=MH_rankingList.get(i).getRank()%>위
 			<%=MH_rankingList.get(i).getM_title()%></button>
+			<%if(String.valueOf(mcode).equals(String.valueOf(MH_rankingList.get(i).getM_code()))){ %>
 		<br>
+			</div>
+			<%} %>
 	</form>
 	<%
 	}
