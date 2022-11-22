@@ -13,7 +13,7 @@
 <% 
 	String MH_code = (String)session.getAttribute("MH_movieCd"); 
 	if(MH_code == null ){%> 
-	<div>영화 상세페이지 작업공간</div> 
+	<h2>영화 상세정보</h2> 
 	<% }else{%>
 		<h2>영화 상세정보</h2><br>
 	<%MovieDao MH_dao = new MovieDao(); 

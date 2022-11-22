@@ -14,25 +14,8 @@ CK_DAO CK_Dao2 = new CK_DAO();%>
 <head>
 <meta charset="UTF-8">
 <title>수준이想</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-	crossorigin="anonymous">
-<!--          meta 선언          -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!--          link 선언          -->
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/style_join.css">
-
-<!--          script 선언          -->
-<script src="https://kit.fontawesome.com/e1bd1cb2a5.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
-<script src="../js/script.js"></script>
-
 </head>
 <body>
 	<%@ include file="header.jsp"%>

@@ -23,6 +23,17 @@ request.setCharacterEncoding("UTF-8");
 <%@ page import="dto.MovieInfo"%>
 <!DOCTYPE html>
 <html>
+<style>
+#movieName {
+	background-color: transparent;
+	border: none;
+
+}
+#clickEmotion{
+opacity : 0.6;
+scale: 1.4;
+}
+</style>
 <body>
 	<h2>영화순위</h2>
 	<br>
@@ -36,18 +47,26 @@ request.setCharacterEncoding("UTF-8");
 	int dd = cal.get(Calendar.DATE) - 1;
 	String today = yyyy + "" + mm + "" + dd + "~" + yyyy + "" + mm + "" + dd;
 	String dateComparison = dao.selectShowRange();
-
+	
+	String mcode = (String)session.getAttribute("MH_movieCd");
 	if (today.equals(dateComparison)) {
 		List<MovieInfo> MH_rankingList = dao.selectMovieRankingList(dateComparison);
 		for (int i = 0; i < MH_rankingList.size(); i++) {
 	%>
 	<form id="movieDetailForm" name="movieDetailForm" method="post"
 		action="MH_selectMovieAction.jsp">
-<%-- 		<span><%=MH_rankingList.get(i).getRank()%>위</span> --%>
-		<input type="hidden" name="movieCd"	 value="<%=MH_rankingList.get(i).getM_code()%>">
-		<button type="submit" style="background-color: transparent; border: none; "><%=MH_rankingList.get(i).getRank()%>위  
-		<%=MH_rankingList.get(i).getM_title()%></button>
+		<%-- 		<span><%=MH_rankingList.get(i).getRank()%>위</span> --%>
+		<input type="hidden" name="movieCd"
+			value="<%=MH_rankingList.get(i).getM_code()%>">
+			<%if(String.valueOf(mcode).equals(String.valueOf(MH_rankingList.get(i).getM_code()))){ %>
+			<div id="clickEmotion">
+			<%} %>
+		<button type="submit" id="movieName"><%=MH_rankingList.get(i).getRank()%>위
+			<%=MH_rankingList.get(i).getM_title()%></button>
+			<%if(String.valueOf(mcode).equals(String.valueOf(MH_rankingList.get(i).getM_code()))){ %>
 		<br>
+			</div>
+			<%} %>
 	</form>
 	<%
 	}
@@ -97,16 +116,17 @@ request.setCharacterEncoding("UTF-8");
 			dao.mergeMovieInfo(mi);
 		}
 	%>
-<form id="movieDetailForm" name="movieDetailForm" method="post"
+	<form id="movieDetailForm" name="movieDetailForm" method="post"
 		action="MH_selectMovieAction.jsp">
-<%-- 		<span><%=MH_rankingList.get(i).getRank()%>위</span> --%>
-		<input type="hidden" name="movieCd" onclick="funcSubmit();" value="<%=dailyBoxObj.get("movieCd")%>">
-		<button type="submit" style="background-color: transparent; border: none; "><%=dailyBoxObj.get("rank")%>위  
-		<%=dailyBoxObj.get("movieNm")%></button>
+		<%-- 		<span><%=MH_rankingList.get(i).getRank()%>위</span> --%>
+
+		<input type="hidden" name="movieCd"
+			value="<%=dailyBoxObj.get("movieCd")%>">
+		<button type="submit" id="movieName"><%=dailyBoxObj.get("rank")%>위
+			<%=dailyBoxObj.get("movieNm")%></button>
 		<br>
 	</form>
 	<%
-	out.println(mi.getShowRange());
 	}
 	} catch (Exception e) {
 	e.printStackTrace();
